@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "title": "React for Beginners",
+    "category": "Web Development",
+    "price": "$19.99",
+    "rating": 4.5,
+    "instructor": "John Doe",
+    "affiliate_link": "https://www.udemy.com/course/react-for-beginners/?couponCode=AFFILIATE123"
+  },
+  {
+    "id": 2,
+    "title": "Node.js Masterclass",
+    "category": "Backend Development",
+    "price": "$24.99",
+    "rating": 4.7,
+    "instructor": "Jane Smith",
+    "affiliate_link": "https://www.udemy.com/course/nodejs-masterclass/?couponCode=AFFILIATE123"
+  },
+  {
+    "id": 3,
+    "title": "Complete Python Bootcamp",
+    "category": "Programming Languages",
+    "price": "$29.99",
+    "rating": 4.8,
+    "instructor": "Alice Johnson",
+    "affiliate_link": "https://www.udemy.com/course/python-bootcamp/?couponCode=AFFILIATE123"
+  }
+]
