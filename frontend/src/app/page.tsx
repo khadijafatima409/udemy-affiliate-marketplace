@@ -1,9 +1,18 @@
+import CourseDetails from "@/components/courseDetails";
+import CourseList from "@/components/courseList";
+import { sampleCourse } from "@/data/sampleCourse";
+
 export default function Home() {
+  const courses = [sampleCourse];
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      {/* <h1 className="text-4xl font-bold text-indigo-600">
-        ✅ Tailwind + TypeScript Ready!
-      </h1> */}
-    </div>
+    <main className="p-6 bg-gray-50 min-h-screen">
+      <CourseDetails course={sampleCourse} />
+
+      <div className="mt-8">
+        <h2 className="text-xl font-semibold mb-4">Other courses</h2>
+        <CourseList initialCourses={courses} />
+      </div>
+    </main>
   );
 }

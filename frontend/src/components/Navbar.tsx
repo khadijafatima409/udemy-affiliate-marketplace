@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { Menu, X, Search, Bell, ShoppingCart } from "lucide-react";
+import { Search, Bell, ShoppingCart } from "lucide-react";
 
 export default function Navbar() {
   const [openMob, setOpenMob] = useState(false);
