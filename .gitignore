@@ -17,7 +17,8 @@ frontend/build/
 frontend/dist/
 backend/build/
 backend/dist/
-
+.next/
+out/
 # -------------------------------------
 # Environment files (sensitive)
 .env
