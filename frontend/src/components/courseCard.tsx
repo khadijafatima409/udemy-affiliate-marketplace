@@ -1,74 +1,66 @@
-// components/CourseCard.tsx
-"use client";
-import React from "react";
 import Link from "next/link";
-import type { Course } from "../type/course";
+import { Star, Users } from "lucide-react";
+import { Course } from "../type/courses";
+import Image from "next/image";
 
-export default function CourseCard({ course }: { course: Course }) {
+interface CourseCardProps {
+  course: Course;
+}
+
+export function CourseCard({ course }: CourseCardProps) {
   return (
-    <article className="bg-white rounded-lg shadow-sm overflow-hidden flex flex-col">
-      <Link href={`/course/${course.id}`} className="block">
-        <div className="h-40 bg-gradient-to-r from-indigo-100 to-indigo-50 flex items-center justify-center text-indigo-600 font-semibold">
-          {/* placeholder image */}
-          <span className="text-sm">Course image</span>
+    <Link href={`/courses/${course.id}`}>
+      <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow overflow-hidden h-full flex flex-col">
+        <div className="relative h-48 w-full bg-gray-200">
+          <Image
+            src={course.image}
+            alt={course.title}
+            fill
+            className="object-cover"
+          />
         </div>
-      </Link>
 
-      <div className="p-4 flex-1 flex flex-col">
-        <Link
-          href={`/course/${course.id}`}
-          className="text-sm font-semibold hover:text-indigo-600"
-        >
-          {course.title}
-        </Link>
+        <div className="p-4 flex-1 flex flex-col">
+          <h3 className="text-lg font-semibold text-[#1c1d1f] mb-2 line-clamp-2">
+            {course.title}
+          </h3>
 
-        <p className="text-xs text-gray-500 mt-1 line-clamp-2">
-          {course.headline}
-        </p>
+          <p className="text-sm text-gray-600 mb-2">{course.instructor}</p>
 
-        <div className="mt-3 flex items-center justify-between text-sm">
-          <div className="flex items-center gap-2">
-            {/* <Stars rating={course.rating} /> */}
-            <span className="text-gray-600">{course.rating.toFixed(1)}</span>
-            <span className="text-gray-400">
-              ({course.reviews.toLocaleString()})
+          <div className="flex items-center gap-2 mb-2">
+            <span className="font-bold text-[#1c1d1f]">{course.rating}</span>
+            <div className="flex items-center">
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  className={`w-4 h-4 ${
+                    i < Math.floor(course.rating)
+                      ? "text-yellow-400 fill-yellow-400"
+                      : "text-gray-300"
+                  }`}
+                />
+              ))}
+            </div>
+            <span className="text-sm text-gray-600">
+              ({course.students.toLocaleString()})
             </span>
           </div>
-          <div className="text-right">
-            <div className="font-semibold">
-              {course.discountedPrice
-                ? `$${course.discountedPrice.toFixed(2)}`
-                : `$${course.price.toFixed(2)}`}
-            </div>
-            {course.discountedPrice && (
-              <div className="text-xs text-gray-400 line-through">
-                ${course.price.toFixed(2)}
-              </div>
-            )}
+
+          <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
+            <Users className="w-4 h-4" />
+            <span>{course.students.toLocaleString()} students</span>
+          </div>
+
+          <div className="mt-auto flex items-center justify-between">
+            <span className="text-2xl font-bold text-[#1c1d1f]">
+              ${course.price}
+            </span>
+            <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
+              {course.level}
+            </span>
           </div>
         </div>
       </div>
-    </article>
+    </Link>
   );
 }
-
-// function Stars({ rating }: { rating: number }) {
-//   const full = Math.floor(rating);
-//   return (
-//     <div className="flex items-center gap-0.5" aria-hidden>
-//       {Array.from({ length: 5 }).map((_, i) => (
-//         <svg
-//           key={i}
-//           className={`w-3 h-3 ${
-//             i < full ? "text-yellow-400" : "text-gray-300"
-//           }`}
-//           viewBox="0 0 24 24"
-//           fill="currentColor"
-//           xmlns="http://www.w3.org/2000/svg"
-//         >
-//           <path d="M12 .587l3.668 7.431L23.5 9.75l-5.75 5.604L19.336 24 12 19.897 4.664 24l1.586-8.646L.5 9.75l7.832-1.732L12 .587z" />
-//         </svg>
-//       ))}
-//     </div>
-//   );
-// }

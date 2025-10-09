@@ -10,5 +10,19 @@ export interface Course {
   students: number;
   duration: string;
   level: string;
-  // reviews: Review[];
+  reviews: Review[];
+}
+
+export interface Review {
+  id: number;
+  user: string;
+  rating: number;
+  comment: string;
+  date: string;
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  icon: string;
 }

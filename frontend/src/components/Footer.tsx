@@ -4,7 +4,7 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="font-semibold text-lg mb-4">CourseHub</h3>
+            <h3 className="font-semibold text-lg mb-4">Udemy</h3>
             <p className="text-sm text-gray-400">
               Your trusted platform for online learning and affiliate marketing.
             </p>
@@ -25,7 +25,7 @@ export function Footer() {
               </li>
               <li>
                 <a href="#" className="hover:text-white">
-                  Teach on CourseHub
+                  Teach on Udemy
                 </a>
               </li>
             </ul>
@@ -75,7 +75,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
-          <p>&copy; 2024 CourseHub. All rights reserved.</p>
+          <p>&copy; 2025 Udemy. All rights reserved.</p>
         </div>
       </div>
     </footer>
