@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { getCategories, getCourses } from "@/utils/api";
 import { CourseList } from "@/components/CourseList";
+import { SearchBar } from "@/components/SearchBar";
 
 const iconMap: Record<string, any> = {
   Code,
@@ -46,8 +47,8 @@ export default async function Home() {
               Start, switch, or advance your career with thousands of courses
               from industry experts.
             </p>
-            <div className="max-w-2xl">
-              {/* <SearchBar placeholder="What do you want to learn?" /> */}
+            <div className="max-w-2xl bg-gray-50 rounded-lg">
+              <SearchBar placeholder="What do you want to learn?" />
             </div>
           </div>
         </div>
