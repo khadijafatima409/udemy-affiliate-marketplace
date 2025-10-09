@@ -26,3 +26,20 @@ export interface Category {
   name: string;
   icon: string;
 }
+
+export interface AffiliateLink {
+  id: number;
+  courseId: number;
+  courseTitle: string;
+  link: string;
+  clicks: number;
+  conversions: number;
+  earnings: number;
+  createdAt: string;
+}
+export interface DashboardStats {
+  totalEarnings: number;
+  totalClicks: number;
+  totalConversions: number;
+  activeLinks: number;
+}

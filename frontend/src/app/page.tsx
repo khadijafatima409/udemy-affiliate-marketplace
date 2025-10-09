@@ -12,12 +12,13 @@ import {
   Palette,
   Smartphone,
   TrendingUp,
+  type LucideIcon,
 } from "lucide-react";
 import { getCategories, getCourses } from "@/utils/api";
 import { CourseList } from "@/components/CourseList";
 import { SearchBar } from "@/components/SearchBar";
 
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, LucideIcon> = {
   Code,
   Smartphone,
   Database,
