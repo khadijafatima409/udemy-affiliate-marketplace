@@ -28,7 +28,7 @@ export function SearchBar({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder}
-          className="w-full pl-12 pr-4 py-4 border border-gray-300 text-[#1c1d1f] focus:outline-none focus:ring-2 focus:ring-[#5624d0] focus:border-transparent"
+          className="w-full pl-12 pr-4 py-4 border border-gray-300 rounded-lg text-[#1c1d1f] focus:outline-none focus:ring-2 focus:ring-[#5624d0] focus:border-transparent"
         />
       </div>
     </form>

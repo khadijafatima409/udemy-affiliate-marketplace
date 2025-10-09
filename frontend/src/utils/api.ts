@@ -21,3 +21,9 @@ export const getCategories = async (): Promise<Category[]> => {
     setTimeout(() => resolve(categories), 100);
   });
 };
+
+export const generateAffiliateLink = (courseId: number): string => {
+  return `https://courseplatform.com/course/${courseId}?ref=affiliate_${Math.random()
+    .toString(36)
+    .substring(7)}`;
+};

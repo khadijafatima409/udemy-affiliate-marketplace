@@ -1,309 +1,257 @@
-// components/CourseDetails.tsx
 "use client";
-import React, { useState } from "react";
 
-type Lecture = {
-  id: string;
-  title: string;
-  duration: string;
-  preview?: boolean;
-};
-type Section = { id: string; title: string; lectures: Lecture[] };
-type Instructor = { name: string; title?: string; avatarUrl?: string };
-export type Course = {
-  id: string;
-  title: string;
-  headline: string;
-  rating: number;
-  reviews: number;
-  students: number;
-  duration: string;
-  lastUpdated: string;
-  language: string;
-  price: number;
-  discountedPrice?: number;
-  whatYouWillLearn: string[];
-  description: string;
-  instructor: Instructor;
-  curriculum: Section[];
-  affiliateUrl?: string;
-};
+import { useState, useEffect } from "react";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+import { CustomButton } from "@/components/ui/CustomButton";
+import { CustomCard } from "@/components/ui/CustomCard";
+import { Star, Users, Clock, BarChart, CheckCircle } from "lucide-react";
+import { Course } from "../type/courses";
+import { generateAffiliateLink } from "@/utils/api";
+import Image from "next/image";
+import { AffiliateLinkBox } from "./Dashboard/AffiliateLinkBox";
 
-export default function CourseDetails({ course }: { course: Course }) {
-  const [openSec, setOpenSec] = useState<string | null>(
-    course.curriculum[0]?.id ?? null
-  );
+interface CourseDetailProps {
+  initialCourse: Course;
+}
 
-  // function fmtPrice(p: number) {
-  //   return `$${p.toFixed(2)}`;
-  // }
+export function CourseDetail({ initialCourse }: CourseDetailProps) {
+  const [course] = useState<Course>(initialCourse);
+  const [affiliateLink, setAffiliateLink] = useState<string>("");
+  const [showAffiliateLink, setShowAffiliateLink] = useState(false);
 
-  function handleBuy() {
-    if (course.affiliateUrl) {
-      // Simulate affiliate click + redirect
-      window.open(course.affiliateUrl, "_blank", "noopener,noreferrer");
-      console.log("Affiliate click simulated for", course.id);
-    } else {
-      alert("No affiliate link configured (demo).");
-    }
-  }
+  const handleGenerateLink = () => {
+    const link = generateAffiliateLink(course.id);
+    setAffiliateLink(link);
+    setShowAffiliateLink(true);
+  };
 
   return (
-    <div className="w-full">
-      {/* Grid: main content + sidebar (stack on small, 2/3 + 1/3 on md+) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Main column */}
-        <div className="md:col-span-2 space-y-6">
-          {/* Hero / top card */}
-          <article className="bg-white p-6 rounded-lg shadow-sm">
-            <h1 className="text-2xl md:text-3xl font-semibold leading-tight">
-              {course.title}
-            </h1>
-            <p className="text-sm text-gray-600 mt-2">{course.headline}</p>
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
 
-            <div className="flex flex-wrap items-center gap-3 mt-4 text-sm text-gray-700">
-              <div className="flex items-center gap-2">
-                <Stars rating={course.rating} />
-                <span className="font-medium ml-1">
-                  {course.rating.toFixed(1)}
-                </span>
-                <span className="text-gray-500">
-                  ({course.reviews.toLocaleString()})
-                </span>
-              </div>
+      <main className="flex-1">
+        <section className="bg-[#1c1d1f] text-white py-12">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2">
+                <div className="mb-4">
+                  <span className="text-sm text-gray-300">
+                    {course.category}
+                  </span>
+                </div>
+                <h1 className="text-3xl md:text-4xl font-bold mb-4">
+                  {course.title}
+                </h1>
+                <p className="text-lg text-gray-300 mb-6">
+                  {course.description}
+                </p>
 
-              <span className="text-gray-400">•</span>
-
-              <div className="text-gray-700">
-                {course.students.toLocaleString()} students
-              </div>
-
-              <span className="text-gray-400">•</span>
-
-              <div className="text-gray-700">
-                Last updated {course.lastUpdated}
-              </div>
-            </div>
-
-            <div className="mt-6">
-              <h3 className="font-semibold">What you&apos;ll learn</h3>
-              <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {course.whatYouWillLearn.map((w, i) => (
-                  <li
-                    key={i}
-                    className="flex items-start gap-2 text-sm text-gray-700"
-                  >
-                    <span className="mt-1 text-green-600">✓</span>
-                    <span>{w}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="mt-6">
-              <h3 className="font-semibold">Description</h3>
-              <p className="mt-2 text-sm text-gray-700 leading-relaxed">
-                {course.description}
-              </p>
-            </div>
-          </article>
-
-          {/* Curriculum */}
-          <section className="bg-white p-4 rounded-lg shadow-sm">
-            <h2 className="text-lg font-semibold px-2">Curriculum</h2>
-
-            <div className="mt-3 divide-y">
-              {course.curriculum.map((sec) => {
-                const open = openSec === sec.id;
-                return (
-                  <div key={sec.id} className="py-2">
-                    <button
-                      onClick={() => setOpenSec(open ? null : sec.id)}
-                      aria-expanded={open}
-                      className="w-full text-left flex items-center justify-between px-3 py-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 rounded"
-                    >
-                      <div>
-                        <div className="font-medium">{sec.title}</div>
-                        <div className="text-xs text-gray-500">
-                          {sec.lectures.length} lectures
-                        </div>
-                      </div>
-                      <div className="text-sm text-gray-500">
-                        {open ? "▾" : "▸"}
-                      </div>
-                    </button>
-
-                    {open && (
-                      <div className="px-4 pb-3">
-                        <ul className="space-y-2">
-                          {sec.lectures.map((lec) => (
-                            <li
-                              key={lec.id}
-                              className="flex items-center justify-between text-sm"
-                            >
-                              <div className="flex items-center gap-3">
-                                {lec.preview && (
-                                  <span className="px-1.5 py-0.5 text-xs border rounded text-indigo-600">
-                                    Preview
-                                  </span>
-                                )}
-                                <span className="text-gray-700">
-                                  {lec.title}
-                                </span>
-                              </div>
-                              <div className="text-gray-500">
-                                {lec.duration}
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-        </div>
-
-        {/* Sidebar */}
-        <aside className="md:col-span-1">
-          {/* On small screens: show a compact card above other sidebar content */}
-          <div className="block md:hidden">
-            <div className="bg-white p-4 rounded-lg shadow-sm mb-4">
-              <div className="flex items-baseline justify-between">
-                <div>
-                  <div className="text-xl font-semibold">
-                    {course.discountedPrice
-                      ? fmt(course.discountedPrice)
-                      : fmt(course.price)}
-                  </div>
-                  {course.discountedPrice && (
-                    <div className="text-sm text-gray-500 line-through">
-                      {fmt(course.price)}
+                <div className="flex items-center gap-6 flex-wrap">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-yellow-400">
+                      {course.rating}
+                    </span>
+                    <div className="flex items-center">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-4 h-4 ${
+                            i < Math.floor(course.rating)
+                              ? "text-yellow-400 fill-yellow-400"
+                              : "text-gray-400"
+                          }`}
+                        />
+                      ))}
                     </div>
-                  )}
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <Users className="w-5 h-5" />
+                    <span>{course.students.toLocaleString()} students</span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-5 h-5" />
+                    <span>{course.duration}</span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <BarChart className="w-5 h-5" />
+                    <span>{course.level}</span>
+                  </div>
                 </div>
-                <div className="text-xs text-gray-500">Bestseller</div>
+
+                <div className="mt-6">
+                  <p className="text-gray-300">
+                    Created by{" "}
+                    <span className="text-white font-semibold">
+                      {course.instructor}
+                    </span>
+                  </p>
+                </div>
               </div>
 
-              <div className="mt-3 space-y-2">
-                <button
-                  onClick={handleBuy}
-                  className="w-full px-4 py-2 rounded bg-amber-500 text-white font-medium"
-                >
-                  Buy now
-                </button>
-                <button className="w-full px-4 py-2 rounded border">
-                  Add to cart
-                </button>
+              <div className="lg:col-span-1">
+                <CustomCard>
+                  <div className="relative h-48 w-full mb-4 rounded-lg overflow-hidden">
+                    <Image
+                      src={course.image}
+                      alt={course.title}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <span className="text-3xl font-bold text-[#1c1d1f]">
+                      ${course.price}
+                    </span>
+                  </div>
+                  <div className="space-y-3">
+                    <CustomButton
+                      variant="primary"
+                      className="w-full"
+                      size="lg"
+                    >
+                      Buy Now
+                    </CustomButton>
+                    <CustomButton
+                      variant="outline"
+                      className="w-full"
+                      size="lg"
+                      onClick={handleGenerateLink}
+                    >
+                      Generate Affiliate Link
+                    </CustomButton>
+                  </div>
+                </CustomCard>
               </div>
-
-              <ul className="mt-3 text-xs text-gray-600 space-y-1">
-                <li>{course.duration} total length</li>
-                <li>{course.language}</li>
-                <li>Certificate of completion</li>
-              </ul>
             </div>
           </div>
+        </section>
 
-          {/* Sticky sidebar card for md+ */}
-          <div className="hidden md:block sticky top-6">
-            <div className="bg-white p-5 rounded-lg border shadow-sm">
-              <div className="text-right text-sm text-gray-500">Bestseller</div>
-              <div className="mt-2">
-                <div className="text-2xl font-semibold">
-                  {course.discountedPrice
-                    ? fmt(course.discountedPrice)
-                    : fmt(course.price)}
-                </div>
-                {course.discountedPrice && (
-                  <div className="text-sm text-gray-500 line-through">
-                    {fmt(course.price)}
-                  </div>
+        <section className="py-12">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2 space-y-8">
+                {showAffiliateLink && (
+                  <AffiliateLinkBox
+                    link={affiliateLink}
+                    title="Your Affiliate Link"
+                  />
                 )}
+
+                <CustomCard>
+                  <h2 className="text-2xl font-bold text-[#1c1d1f] mb-4">
+                    What you&apos;ll learn
+                  </h2>
+                  <ul className="grid md:grid-cols-2 gap-3">
+                    {[
+                      "Build real-world projects from scratch",
+                      "Master core concepts and best practices",
+                      "Learn industry-standard tools and workflows",
+                      "Get hands-on experience with practical exercises",
+                      "Access to downloadable resources",
+                      "Certificate of completion",
+                    ].map((item, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                        <span className="text-sm text-gray-700">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CustomCard>
+
+                <CustomCard>
+                  <h2 className="text-2xl font-bold text-[#1c1d1f] mb-4">
+                    Course Description
+                  </h2>
+                  <p className="text-gray-700 leading-relaxed mb-4">
+                    {course.description}
+                  </p>
+                  <p className="text-gray-700 leading-relaxed">
+                    This comprehensive course is designed to take you from
+                    beginner to advanced. You&apos;ll learn through hands-on
+                    projects and real-world examples. By the end of this course,
+                    you&apos;ll have the skills and confidence to build
+                    professional projects on your own.
+                  </p>
+                </CustomCard>
+
+                <CustomCard>
+                  <h2 className="text-2xl font-bold text-[#1c1d1f] mb-4">
+                    Student Reviews
+                  </h2>
+                  {course.reviews.length > 0 ? (
+                    <div className="space-y-4">
+                      {course.reviews.map((review) => (
+                        <div
+                          key={review.id}
+                          className="border-b border-gray-200 pb-4 last:border-0"
+                        >
+                          <div className="flex items-center gap-2 mb-2">
+                            <div className="w-10 h-10 bg-[#5624d0] rounded-full flex items-center justify-center text-white font-semibold">
+                              {review.user.charAt(0)}
+                            </div>
+                            <div>
+                              <p className="font-semibold text-[#1c1d1f]">
+                                {review.user}
+                              </p>
+                              <div className="flex items-center gap-1">
+                                {[...Array(5)].map((_, i) => (
+                                  <Star
+                                    key={i}
+                                    className={`w-4 h-4 ${
+                                      i < review.rating
+                                        ? "text-yellow-400 fill-yellow-400"
+                                        : "text-gray-300"
+                                    }`}
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                          <p className="text-sm text-gray-700">
+                            {review.comment}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-gray-600">No reviews yet.</p>
+                  )}
+                </CustomCard>
               </div>
 
-              <div className="mt-4 space-y-2">
-                <button
-                  onClick={handleBuy}
-                  className="w-full px-4 py-2 rounded bg-amber-500 text-white font-medium hover:brightness-95"
-                >
-                  Buy now
-                </button>
-                <button className="w-full px-4 py-2 rounded border">
-                  Add to cart
-                </button>
-                <button className="w-full px-4 py-2 rounded border">
-                  Gift this course
-                </button>
-              </div>
-
-              <ul className="mt-4 text-sm text-gray-600 space-y-2">
-                <li>{course.duration} total length</li>
-                <li>{course.language}</li>
-                <li>Certificate of completion</li>
-              </ul>
-            </div>
-
-            <div className="mt-4 bg-white p-4 rounded-lg border shadow-sm">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-semibold">
-                  {initials(course.instructor.name)}
-                </div>
-                <div>
-                  <div className="font-medium">{course.instructor.name}</div>
-                  <div className="text-sm text-gray-500">
-                    {course.instructor.title}
+              <div className="lg:col-span-1">
+                <CustomCard>
+                  <h3 className="text-xl font-bold text-[#1c1d1f] mb-4">
+                    About the Instructor
+                  </h3>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-16 h-16 bg-[#5624d0] rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                      {course.instructor.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-[#1c1d1f]">
+                        {course.instructor}
+                      </p>
+                      <p className="text-sm text-gray-600">Expert Instructor</p>
+                    </div>
                   </div>
-                </div>
+                  <p className="text-sm text-gray-700">
+                    Professional educator with years of experience in the
+                    industry. Passionate about helping students achieve their
+                    learning goals.
+                  </p>
+                </CustomCard>
               </div>
-              <p className="mt-3 text-sm text-gray-700">
-                {course.instructor.title} — hands-on, project-based lessons.
-              </p>
             </div>
           </div>
-        </aside>
-      </div>
-    </div>
-  );
-}
+        </section>
+      </main>
 
-/* ---------- small helpers ---------- */
-
-function fmt(n: number) {
-  return `$${n.toFixed(2)}`;
-}
-
-function initials(name = "") {
-  return name
-    .split(" ")
-    .map((s) => s[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
-}
-
-function Stars({ rating }: { rating: number }) {
-  const full = Math.floor(rating);
-  return (
-    <div className="flex items-center gap-1" aria-hidden>
-      {Array.from({ length: 5 }).map((_, i) => {
-        const filled = i < full;
-        return (
-          <svg
-            key={i}
-            className={`w-4 h-4 ${
-              filled ? "text-yellow-400" : "text-gray-300"
-            }`}
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M12 .587l3.668 7.431L23.5 9.75l-5.75 5.604L19.336 24 12 19.897 4.664 24l1.586-8.646L.5 9.75l7.832-1.732L12 .587z" />
-          </svg>
-        );
-      })}
+      <Footer />
     </div>
   );
 }
