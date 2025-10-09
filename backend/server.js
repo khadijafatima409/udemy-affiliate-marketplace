@@ -1,78 +1,28 @@
-const express = require("express");
-const connectDB = require("../backend/config/db");
-const cors = require("cors");
-const fs = require("fs");
-const path = require("path");
-require("dotenv").config();
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import { connectDB } from "../backend/config/db.js";
+import authRoutes from "../backend/routes/authRoutes.js";
+import courseRoutes from "../backend/routes/courseRoutes.js";
+import affiliateRoutes from "../backend/routes/affiliateRoutes.js";
+import dashboardRoutes from "../backend/routes/dashboardRoutes.js";
 
+dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// connect to MongoDB
 connectDB();
 
-const PORT = process.env.PORT || 5000;
-
-// Load courses from JSON
-const coursesFilePath = path.join(__dirname, "courses.json");
-let courses = JSON.parse(fs.readFileSync(coursesFilePath, "utf-8"));
-
-// Root route
 app.get("/", (req, res) => {
-  res.send("Udemy Affiliate Marketplace Backend is running!");
+  res.send("✅ Udemy Affiliate API is running...");
 });
 
-// Get all courses
-app.get("/api/courses", (req, res) => {
-  res.json(courses);
-});
+app.use("/api/auth", authRoutes);
+app.use("/api/courses", courseRoutes);
+app.use("/api/affiliate", affiliateRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
-// Get single course by id
-app.get("/api/course/:id", (req, res) => {
-  const courseId = parseInt(req.params.id);
-  const course = courses.find((c) => c.id === courseId);
-  if (course) {
-    res.json(course);
-  } else {
-    res.status(404).json({ message: "Course not found" });
-  }
-});
-
-// Search/filter courses
-app.get("/api/courses/search", (req, res) => {
-  const { query, category, minRating } = req.query;
-  let results = courses;
-
-  if (query) {
-    results = results.filter((c) =>
-      c.title.toLowerCase().includes(query.toLowerCase())
-    );
-  }
-
-  if (category) {
-    results = results.filter((c) => c.category === category);
-  }
-
-  if (minRating) {
-    results = results.filter((c) => c.rating >= parseFloat(minRating));
-  }
-
-  res.json(results);
-});
-
-// Get affiliate link
-app.get("/api/course/:id/affiliate", (req, res) => {
-  const courseId = parseInt(req.params.id);
-  const course = courses.find((c) => c.id === courseId);
-  if (course) {
-    res.json({ affiliate_link: course.affiliate_link });
-  } else {
-    res.status(404).json({ message: "Course not found" });
-  }
-});
-
-// Start server
-app.listen(PORT, () =>
-  console.log(`Server running on http://localhost:${PORT}`)
+app.listen(process.env.PORT, () =>
+  console.log(`✅ Server running on port ${process.env.PORT}`)
 );
