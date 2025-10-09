@@ -1,18 +1,31 @@
-import CourseDetails from "@/components/courseDetails";
-import CourseList from "@/components/courseList";
-import { sampleCourse } from "@/data/sampleCourse";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 
-export default function Home() {
-  const courses = [sampleCourse];
+export default async function Home() {
+  // const courses = await getCourses();
 
   return (
-    <main className="p-6 bg-gray-50 min-h-screen">
-      <CourseDetails course={sampleCourse} />
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
 
-      <div className="mt-8">
-        <h2 className="text-xl font-semibold mb-4">Other courses</h2>
-        <CourseList initialCourses={courses} />
-      </div>
-    </main>
+      <section className="bg-gradient-to-r from-[#5624d0] to-[#7c3aed] text-white py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              Learn Without Limits
+            </h1>
+            <p className="text-xl mb-8 text-gray-100">
+              Start, switch, or advance your career with thousands of courses
+              from industry experts.
+            </p>
+            <div className="max-w-2xl">
+              {/* <SearchBar placeholder="What do you want to learn?" /> */}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </div>
   );
 }
