@@ -19,6 +19,9 @@ backend/build/
 backend/dist/
 .next/
 out/
+backend/.DS_Store
+backend/coverage/
+backend/dist/
 # -------------------------------------
 # Environment files (sensitive)
 .env
