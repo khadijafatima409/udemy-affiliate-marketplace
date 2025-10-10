@@ -1,5 +1,5 @@
 export interface Course {
-  id: number;
+  _id: string;
   title: string;
   instructor: string;
   image: string;
@@ -22,7 +22,7 @@ export interface Review {
 }
 
 export interface Category {
-  id: number;
+  _id: number;
   name: string;
   icon: string;
 }

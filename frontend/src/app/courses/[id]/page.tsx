@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 export async function generateStaticParams() {
   const courses = await getCourses();
   return courses.map((course) => ({
-    id: course.id.toString(),
+    id: course._id.toString(),
   }));
 }
 
@@ -19,7 +19,7 @@ interface CourseDetailPageProps {
 export default async function CourseDetailPage({
   params,
 }: CourseDetailPageProps) {
-  const course = await getCourseById(Number(params.id));
+  const course = await getCourseById((params.id));
 
   if (!course) {
     notFound();

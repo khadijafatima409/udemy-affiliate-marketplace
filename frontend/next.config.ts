@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
 
   images: {
-    domains: ["images.pexels.com"],
+    domains: ["img-c.udemycdn.com", "images.pexels.com"],
   },
 };
 

@@ -9,7 +9,7 @@ interface CourseCardProps {
 
 export function CourseCard({ course }: CourseCardProps) {
   return (
-    <Link href={`/courses/${course.id}`}>
+    <Link href={`/courses/${course._id}`}>
       <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow overflow-hidden h-full flex flex-col">
         <div className="relative h-48 w-full bg-gray-200">
           <Image

@@ -21,7 +21,7 @@ export function CourseDetail({ initialCourse }: CourseDetailProps) {
   const [showAffiliateLink, setShowAffiliateLink] = useState(false);
 
   const handleGenerateLink = () => {
-    const link = generateAffiliateLink(course.id);
+    const link = generateAffiliateLink(course._id);
     setAffiliateLink(link);
     setShowAffiliateLink(true);
   };

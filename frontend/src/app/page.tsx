@@ -17,6 +17,7 @@ import {
 import { getCategories, getCourses } from "@/utils/api";
 import { CourseList } from "@/components/CourseList";
 import { SearchBar } from "@/components/SearchBar";
+import { Category } from "@/type/courses";
 
 const iconMap: Record<string, LucideIcon> = {
   Code,
@@ -31,8 +32,8 @@ const iconMap: Record<string, LucideIcon> = {
 
 export default async function Home() {
   const courses = await getCourses();
-  const categories = await getCategories();
-  const featuredCourses = courses.slice(0, 4);
+  const categories: Category[] = await getCategories();
+  const featuredCourses = courses;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -62,10 +63,10 @@ export default async function Home() {
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {categories.map((category) => {
-                const Icon = iconMap[category.icon];
+                const Icon = iconMap[category.icon] ?? Code; // fallback icon
                 return (
                   <Link
-                    key={category.id}
+                    key={category._id}
                     href={`/courses?category=${encodeURIComponent(
                       category.name
                     )}`}

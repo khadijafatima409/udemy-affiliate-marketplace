@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Course } from "../type/courses";
+import { Category, Course } from "../type/courses";
 
 // ✅ Your backend base URL
 const API_URL = "http://localhost:5000/api";
@@ -11,13 +11,20 @@ export const getCourses = async (): Promise<Course[]> => {
 };
 
 // ✅ Fetch a course by ID
-export const getCourseById = async (id: string): Promise<Course> => {
-  const res = await axios.get<Course>(`${API_URL}/courses/${id}`);
+export const getCourseById = async (_id: string): Promise<Course> => {
+  const res = await axios.get<Course>(`${API_URL}/courses/${_id}`);
   return res.data;
 };
 
 // ✅ (optional) Example for categories if you add them later
-export const getCategories = async () => {
-  const res = await axios.get(`${API_URL}/categories`);
+export const getCategories = async (): Promise<Category[]> => {
+  const res = await axios.get<Category[]>(`${API_URL}/categories`);
   return res.data;
+};
+
+// ✅ Generate affiliate link (mock)
+export const generateAffiliateLink = (id: string) => {
+  return `https://courseplatform.com/course/${id}?ref=affiliate_${Math.random()
+    .toString(36)
+    .substring(7)}`;
 };
