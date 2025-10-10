@@ -158,8 +158,14 @@ const importData = async () => {
   try {
     await connectDB();
     await Course.deleteMany();
-    await Course.insertMany(courses);
+    const insertedCourses = await Course.insertMany(courses);
     console.log("✅ Sample courses inserted!");
+    console.log("\n🆔 Inserted Course IDs:");
+    insertedCourses.forEach((course) => {
+      console.log(`${course.title}: ${course._id}`);
+    });
+    console.log("\nUse any of these IDs for testing:");
+    console.log("👉 Example: http://localhost:5000/api/courses/<_id_here>");
     process.exit();
   } catch (err) {
     console.error("❌ Error inserting data:", err);
