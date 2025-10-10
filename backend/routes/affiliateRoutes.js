@@ -4,4 +4,5 @@ import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 router.post("/generate", protect, generateAffiliateLink);
+
 export default router;
