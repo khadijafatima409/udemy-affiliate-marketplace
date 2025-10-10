@@ -34,7 +34,7 @@ npm run dev
 
 Open http://localhost:3000 in your browser.
 
-Project Overview
+**Project Overview**
 
 -This project demonstrates a Udemy Affiliate Marketplace MVP.
 
@@ -44,7 +44,7 @@ Project Overview
 
 -Backend includes routes for courses, authentication, affiliate links, and dashboard.
 
--Future Enhancements
+**-Future Enhancements**
 
 -Real-time dashboard stats connected to backend
 
@@ -52,10 +52,3 @@ Project Overview
 
 -Advanced search and filtering
 
-Future Enhancements
-
--Real-time dashboard stats connected to backend
-
--Payment gateway integration
-
--Advanced search and filtering
