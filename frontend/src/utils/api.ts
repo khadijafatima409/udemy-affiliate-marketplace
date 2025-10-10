@@ -1,5 +1,10 @@
 import axios from "axios";
-import { Category, Course } from "../type/courses";
+import {
+  AffiliateLink,
+  Category,
+  Course,
+  DashboardStats,
+} from "../type/courses";
 
 // ✅ Your backend base URL
 const API_URL = "http://localhost:5000/api";
@@ -27,4 +32,38 @@ export const generateAffiliateLink = (id: string) => {
   return `https://courseplatform.com/course/${id}?ref=affiliate_${Math.random()
     .toString(36)
     .substring(7)}`;
+};
+
+export const getMockDashboardStats = (): DashboardStats => {
+  return {
+    totalEarnings: 2847.5,
+    totalClicks: 1234,
+    totalConversions: 87,
+    activeLinks: 15,
+  };
+};
+
+export const getMockAffiliateLinks = (): AffiliateLink[] => {
+  return [
+    {
+      id: 1,
+      courseId: 1,
+      courseTitle: "React for Beginners",
+      link: "https://courseplatform.com/course/1?ref=aff_xyz123",
+      clicks: 245,
+      conversions: 18,
+      earnings: 899.82,
+      createdAt: "2024-01-10",
+    },
+    {
+      id: 2,
+      courseId: 3,
+      courseTitle: "Python for Data Science",
+      link: "https://courseplatform.com/course/3?ref=aff_abc456",
+      clicks: 189,
+      conversions: 12,
+      earnings: 839.88,
+      createdAt: "2024-01-15",
+    },
+  ];
 };
