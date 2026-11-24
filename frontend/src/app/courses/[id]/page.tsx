@@ -4,22 +4,28 @@ import { getCourses, getCourseById } from "@/utils/api";
 import { notFound } from "next/navigation";
 
 export async function generateStaticParams() {
-  const courses = await getCourses();
-  return courses.map((course) => ({
-    id: course._id.toString(),
-  }));
+  try {
+    const courses = await getCourses();
+    return courses.map((course) => ({
+      id: course._id.toString(),
+    }));
+  } catch {
+    // Backend not reachable at build time; pages will render on request instead
+    return [];
+  }
 }
 
 interface CourseDetailPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function CourseDetailPage({
   params,
 }: CourseDetailPageProps) {
-  const course = await getCourseById((params.id));
+  const { id } = await params;
+  const course = await getCourseById(id);
 
   if (!course) {
     notFound();
